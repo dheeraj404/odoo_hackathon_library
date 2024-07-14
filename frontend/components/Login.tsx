@@ -54,7 +54,7 @@ export default function Login() {
                 </form>
                 <div className="border rounded-lg flex flex-col justify-center align-middle items-center space-y-4 w-full py-4">
                     <p className="text-gray-500">Not registered?</p>
-                    <Link href={"/register"} className="border p-2 rounded-lg bg-primary text-secondary">Register your Institute</Link>
+                    <Link href={"/register"} className="border p-2 rounded-lg bg-primary text-secondary">Register your Library</Link>
                 </div>
             </div>
         </main>

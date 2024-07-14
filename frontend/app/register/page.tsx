@@ -52,10 +52,10 @@ export default function Register() {
                         <Link href={"/"}>
                             <MoveLeft className="mr-4" />
                         </Link>
-                        Register Your Institute
+                        Register Your Library
                     </CardTitle>
                     <CardDescription>
-                        Fill out the form below to register your institute.
+                        Fill out the form below to register your Library.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -65,11 +65,11 @@ export default function Register() {
                                 htmlFor="institute-name"
                                 className="inline-block"
                             >
-                                Institute Name
+                              Library Name
                             </Label>
                             <Input
                                 id="institute-name"
-                                placeholder="Enter institute name"
+                                placeholder="Enter Library name"
                                 className="inline-block"
                                 onChange={(e) => setFormData({
                                     ...formData,
@@ -84,7 +84,7 @@ export default function Register() {
                             </Label>
                             <Input
                                 id="address"
-                                placeholder="Enter institute address"
+                                placeholder="Enter Library address"
                                 className="inline-block"
                                 onChange={(e) => setFormData({
                                     ...formData,
