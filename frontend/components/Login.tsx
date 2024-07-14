@@ -36,11 +36,11 @@ export default function Login() {
     };
 
     return (
-        <main className="min-h-screen flex justify-center items-center">
-            <div className="grid grid-cols-1 space-y-4 gap-4">
+        <main className="min-h-screen flex justify-center items-center bg-gray-100">
+            <div className="grid grid-cols-1 space-y-4 gap-4 w-96 max-w-lg">
                 <form
                     onSubmit={login}
-                    className="grid grid-cols-1 gap-4 border rounded-lg p-4"
+                    className="grid grid-cols-1 gap-4 border rounded-lg p-12 shadow-lg bg-white"
                 >
                     <div>
                         <Label htmlFor="login_email">Email</Label>
@@ -52,7 +52,7 @@ export default function Login() {
                     </div>
                     <Button type="submit">Login</Button>
                 </form>
-                <div className="border rounded-lg flex flex-col justify-center align-middle items-center space-y-4 w-full py-4">
+                <div className="border rounded-lg flex flex-col justify-center items-center space-y-4 w-full py-4 shadow-lg bg-white">
                     <p className="text-gray-500">Not registered?</p>
                     <Link href={"/register"} className="border p-2 rounded-lg bg-primary text-secondary">Register your Library</Link>
                 </div>
