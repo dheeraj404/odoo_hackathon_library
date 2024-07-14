@@ -5,7 +5,7 @@ import User from "../models/user.js";
 export const checkUserAuthentication = async (req, res, next) => {
   try {
     const token = req.header("Authorization")?.split(" ")[1];
-
+    console.log(token);
     if (!token) {
       return res.status(401).json({
         success: false,

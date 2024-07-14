@@ -76,6 +76,7 @@ export const searchBooksByTitle = async (req, res) => {
   try {
     const { title } = req.params;
     const user = req.user;
+    console.log(user);
     const books = await Book.find({
       title: { $regex: title, $options: "i" },
       library_id: user.library_id,
