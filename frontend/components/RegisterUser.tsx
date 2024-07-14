@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { BASE_URL } from "@/lib/constants";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 const RegisterUser: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
@@ -21,17 +23,23 @@ const RegisterUser: React.FC = () => {
 
         if (email && password && name && userID && department) {
             try {
-                const response = await axios.post(`${BASE_URL}/api/student/register`, {
-                    email,
-                    password,
-                    name,
-                    user_id: userID,
-                    department,
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                const response = await axios.post(
+                    `${BASE_URL}/api/student/register`,
+                    {
+                        email,
+                        password,
+                        name,
+                        user_id: userID,
+                        department,
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "token"
+                            )}`,
+                        },
                     }
-                });
+                );
                 if (response?.data?.success) {
                     console.log("Student registered successfully");
                     window.location.reload();
@@ -52,6 +60,9 @@ const RegisterUser: React.FC = () => {
                     onSubmit={registerUser}
                     className="grid grid-cols-1 gap-4 border rounded-lg p-12 shadow-lg bg-white"
                 >
+                    <Link href={"/"}>
+                        <ArrowLeft />
+                    </Link>
                     <div className="space-y-2">
                         <Label htmlFor="name" className="inline-block">
                             Name
@@ -109,8 +120,10 @@ const RegisterUser: React.FC = () => {
                             className="inline-block"
                         />
                     </div>
-                    {error && <p className="text-red-500 font-medium">{error}</p>}
-                    <Button type="submit">Register Student</Button>
+                    {error && (
+                        <p className="text-red-500 font-medium">{error}</p>
+                    )}
+                    <Button type="submit">Register</Button>
                 </form>
             </div>
         </main>

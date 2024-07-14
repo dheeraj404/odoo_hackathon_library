@@ -9,7 +9,7 @@ export default function Home() {
         Your Gateway to Seamless Library Management
         </p>
         <div className="grid grid-cols-2 items-center gap-4">
-          <Link href="/register" className="text-lg font-medium border rounded-lg p-3 flex justify-center bg-primary text-secondary hover:opacity-95 transition-all ease-in-out hover:scale-105">
+          <Link href="/register/library" className="text-lg font-medium border rounded-lg p-3 flex justify-center bg-primary text-secondary hover:opacity-95 transition-all ease-in-out hover:scale-105">
             Register your Library
           </Link>          
           <Link href="/login" className="text-xl font-medium border rounded-lg p-3 flex justify-center bg-primary text-secondary hover:opacity-95 transition-all ease-in-out hover:scale-105">
