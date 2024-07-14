@@ -100,7 +100,7 @@ const RegisterUser: React.FC = () => {
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="user_id" className="inline-block">
-                            Student ID
+                            Student/User ID
                         </Label>
                         <Input
                             id="user_id"
