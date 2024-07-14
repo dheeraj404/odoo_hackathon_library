@@ -21,6 +21,7 @@ export const addNewBook = async (req, res) => {
     } = req.body;
     const user = req.user;
     const library_id = user.library_id;
+    console.log(user);
     const book = await Book.create({
       title,
       authors,
@@ -280,86 +281,110 @@ export const approveOrRejectIssueRequest = async (req, res) => {
 // get all books issued/returned of a user from params
 
 export const getBooksIssuedReturned = async (req, res) => {
-    try {
-        const { user_id } = req.params;
-        const user
-        = await User.findById(user_id);
-        if (!user) {
-            return res.status(404).json({
-                success: false,
-                message: "User not found",
-            });
-        }
-        const books = await BookLog.find({ user_id });
-        let data = [];
-        for (let i = 0; i < books.length; i++) {
-            const book = await Book.findById(books[i].book_id);
-            data.push({
-                book_id: book._id,
-                title: book.title,
-                issue_date: books[i].issue_date,
-                return_date: books[i].return_date,
-                status: books[i].status,
-                user_id: user._id,
-                user_name: user.name,
-
-            });
-        }
-        res.status(200).json({
-            success: true,
-            message: "Books fetched successfully",
-            data,
-        });
+  try {
+    const { user_id } = req.params;
+    const user = await User.findById(user_id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
-    catch (error) {
-        console.log(error.message);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-            error: error.message,
-        });
+    const books = await BookLog.find({ user_id });
+    let data = [];
+    for (let i = 0; i < books.length; i++) {
+      const book = await Book.findById(books[i].book_id);
+      data.push({
+        book_id: book._id,
+        title: book.title,
+        issue_date: books[i].issue_date,
+        return_date: books[i].return_date,
+        status: books[i].status,
+        user_id: user._id,
+        user_name: user.name,
+      });
     }
-}
+    res.status(200).json({
+      success: true,
+      message: "Books fetched successfully",
+      data,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
 // return a book by user done by a librarian only
 export const returnBook = async (req, res) => {
-    try {
-        const { booklog_id,user_id } = req.params;
-        const user = req.user;
-        if(user.role !== "librarian") {
-            return res.status(401).json({
-                success: false,
-                message: "Not authorized to access this route",
-            });
-        }
-        const bookLog = await BookLog.findById(booklog_id);
-        if (!bookLog) {
-            return res.status(404).json({
-                success: false,
-                message: "Book log not found",
-            });
-        }
-        if(bookLog.user_id.toString() !== user_id.toString()) {
-            return res.status(401).json({
-                success: false,
-                message: "Not authorized to access this route",
-            });
-        }
-        await bookLog.updateOne({ status: "returned" });
-        await Book.findByIdAndUpdate(bookLog.book_id, {
-            $inc: { quantity: 1 },
-        });
-        res.status(200).json({
-            success: true,
-            message: "Book returned successfully",
-        });
+  try {
+    const { booklog_id, user_id } = req.params;
+    const user = req.user;
+    if (user.role !== "librarian") {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to access this route",
+      });
     }
-    catch (error) {
-        console.log(error.message);
-        res.status(500).json({
-            success: false,
-            message: "Internal server error",
-            error: error.message,
-        });
+    const bookLog = await BookLog.findById(booklog_id);
+    if (!bookLog) {
+      return res.status(404).json({
+        success: false,
+        message: "Book log not found",
+      });
     }
-}
+    if (bookLog.user_id.toString() !== user_id.toString()) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authorized to access this route",
+      });
+    }
+    await bookLog.updateOne({ status: "returned" });
+    await Book.findByIdAndUpdate(bookLog.book_id, {
+      $inc: { quantity: 1 },
+    });
+    res.status(200).json({
+      success: true,
+      message: "Book returned successfully",
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
 
+// get recommended books based on user previous issue requests ,issues and returns ..send books of all those authors and same genre
+export const getRecommendedBooks = async (req, res) => {
+  try {
+    const user = req.user;
+    const issueRequests = await IssueRequest.find({ user_id: user._id });
+    const bookLogs = await BookLog.find({ user_id: user._id });
+    const books = await Book.find({
+      $or: [
+        { authors: { $in: issueRequests.map((request) => request.author) } },
+        { genre: { $in: issueRequests.map((request) => request.genre) } },
+        { authors: { $in: bookLogs.map((log) => log.author) } },
+        { genre: { $in: bookLogs.map((log) => log.genre) } },
+      ],
+    });
+    res.status(200).json({
+      success: true,
+      message: "Books fetched successfully",
+      data: books,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};

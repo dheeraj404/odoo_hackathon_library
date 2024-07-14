@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+import fetch from "node-fetch";
 
 const GOOGLE_BOOKS_API = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
 const LOCAL_API = "http://localhost:5000/api/book/add-new-book";
@@ -34,13 +34,14 @@ function parseBookData(book) {
     authors: volumeInfo.authors || [],
     ISBN: ISBN_13 || ISBN_10 || "",
     publisher: volumeInfo.publisher || "",
-    genre: volumeInfo.categories || [],
+    genre: volumeInfo.categories ? volumeInfo.categories[0] : "",
     description: volumeInfo.description || "",
     year: volumeInfo.publishedDate
       ? new Date(volumeInfo.publishedDate).getFullYear()
       : "",
     small_icon: volumeInfo.imageLinks?.smallThumbnail || "",
     large_icon: volumeInfo.imageLinks?.thumbnail || "",
+    quantity: 0, // Default value as per the model
   };
 }
 
@@ -52,7 +53,7 @@ async function addBookToLocalAPI(book) {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTM1ODY2NzRmZjVlMzg0NDk2ZTM5MCIsImlhdCI6MTcyMDk0MDg0MSwiZXhwIjoxNzIxMzcyODQxfQ.tHOL07HqwxwwvYf6KAVuA-kvDWadAh06bjpu8Y5wZb8",
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OTM1ODY2NzRmZjVlMzg0NDk2ZTM5MCIsImlhdCI6MTcyMDk0MTc2OSwiZXhwIjoxNzIxMzczNzY5fQ.VXgVWYqort4QD3w_q6OdH02F9u-4KEmREZWUsI_TRlU",
       },
       body: JSON.stringify(book),
     });
@@ -87,6 +88,9 @@ async function addBookToLocalAPI(book) {
   const books = await fetchBooks(isbnList);
   for (const book of books) {
     const bookData = parseBookData(book);
+    // Assuming req.user.library_id is available in your context
+    const userLibraryId = "6693586674ff5e384496e38e"; // Replace with actual library_id from req.user
+    bookData.library_id = userLibraryId;
     await addBookToLocalAPI(bookData);
   }
 })();

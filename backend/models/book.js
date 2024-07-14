@@ -19,7 +19,7 @@ const bookSchema = new mongoose.Schema({
   },
   publisher: {
     type: String,
-    required: true,
+    // required: true,
   },
   description: {
     type: String,
