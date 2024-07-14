@@ -1,14 +1,12 @@
-// app/page.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Pagination } from "@/components/ui/pagination";
 import { useRouter } from "next/navigation";
-import handleSignOut from "@/lib/signout";
 
 const books = [
     {
@@ -62,8 +60,8 @@ const books = [
 
 const BOOKS_PER_PAGE = 3;
 
-export default function HomePage({params} : {params : {user_id : string}}) {
-	const { user_id } = params;
+export default function HomePage({ params }: { params: { user_id: string } }) {
+    const { user_id } = params;
     const [currentPage, setCurrentPage] = useState(1);
 	const router = useRouter();
     const indexOfLastBook = currentPage * BOOKS_PER_PAGE;
@@ -71,10 +69,8 @@ export default function HomePage({params} : {params : {user_id : string}}) {
     const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
     const totalPages = Math.ceil(books.length / BOOKS_PER_PAGE);
 	const [searchQuery, setSearchQuery] = useState('');
-    const token = window.localStorage.getItem('token');
-    localStorage
     const handleSearch = (event: any) => {
-        event.preventDefault();        
+        event.preventDefault();
         router.push(`/search/${user_id}/${encodeURIComponent(searchQuery)}`);
     };
     if(!token){
@@ -93,12 +89,10 @@ export default function HomePage({params} : {params : {user_id : string}}) {
         <div className="container mx-auto p-4">
             <header className="flex justify-between items-center mb-8">
                 <div className="flex items-center">
-                    <img
-                        className="w-6 h-6 mr-2" /* Add your library icon SVG here */
-                        src="/illustration.png"
-                        alt="logo"
+                    <svg
+                        className="w-8 h-8 mr-2" /* Add your library icon SVG here */
                     />
-                    <h1 className="text-2xl font-bold">LMS</h1>
+                    <h1 className="text-2xl font-bold">Public Library</h1>
                 </div>
                 <Button variant="outline" onClick={handleSignOut}>Sign out</Button>
             </header>
@@ -107,33 +101,33 @@ export default function HomePage({params} : {params : {user_id : string}}) {
                 <div className="col-span-2">
                     <h2 className="text-xl font-semibold mb-4">Search Books</h2>
                     <form className="flex mb-8">
-                        <Input placeholder="Enter book name" className="mr-2" onChange={(e)=>setSearchQuery(e.target.value)}/>
+                        <Input placeholder="Enter book name" className="mr-2" onChange={(e) => setSearchQuery(e.target.value)} />
                         <Button onClick={(e) => handleSearch(e)} type="submit">Search</Button>
                     </form>
 
                     <h2 className="text-xl font-semibold mb-4">My Books</h2>
-                    {currentBooks.map((book) => (
-                        <Card key={book.id} className="mb-4">
-                            <CardContent className="flex p-4">
-                                <img
-                                    src={`https://picsum.photos/seed/${book.id}/200/300`}
-                                    alt="Book cover"
-                                    className="w-24 h-32 object-cover mr-4 rounded-md"
-                                />
-                                <div>
-                                    <h3 className="font-semibold">
-                                        {book.title}
-                                    </h3>
-                                    <p className="text-sm text-gray-500 mt-2">
-                                        {book.description}
-                                    </p>
-                                    <Button variant="outline" className="mt-4">
-                                        Return Book
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : error ? (
+                        <p>{error}</p>
+                    ) : (
+                        books.map((book) => (
+                            <Card key={book.id} className="mb-4">
+                                <CardContent className="flex p-4">
+                                    <img
+                                        src={book.imageUrl}
+                                        alt="Book cover"
+                                        className="w-24 h-32 object-cover mr-4 rounded-md"
+                                    />
+                                    <div>
+                                        <h3 className="font-semibold">{book.title}</h3>
+                                        <p className="text-sm text-gray-500 mt-2">{book.description}</p>
+                                        <Button variant="outline" className="mt-4">Return Book</Button>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))
+                    )}
 
                     <Pagination
                         className="mt-4"
@@ -156,43 +150,25 @@ export default function HomePage({params} : {params : {user_id : string}}) {
                                     <AvatarFallback>MA</AvatarFallback>
                                 </Avatar>
                                 <div>
-                                    <h3 className="font-semibold">
-                                        Mitchell Admin
-                                    </h3>
-                                    <p className="text-sm text-gray-500">
-                                        Your001234
-                                    </p>
+                                    <h3 className="font-semibold">Mitchell Admin</h3>
+                                    <p className="text-sm text-gray-500">Your001234</p>
                                 </div>
                             </div>
                             <div className="space-y-2">
                                 <p>
-                                    <span className="font-semibold">
-                                        Address:
-                                    </span>{" "}
-                                    Scretharper St. 120/3 San Francisc
+                                    <span className="font-semibold">Address:</span> Scretharper St. 120/3 San Francisc
                                 </p>
                                 <p>
-                                    <span className="font-semibold">
-                                        Phone:
-                                    </span>{" "}
-                                    +1 555-555-5555
+                                    <span className="font-semibold">Phone:</span> +1 555-555-5555
                                 </p>
                                 <p>
-                                    <span className="font-semibold">
-                                        Email:
-                                    </span>{" "}
-                                    admin@yourdomain.somewhere.com
+                                    <span className="font-semibold">Email:</span> admin@yourdomain.somewhere.com
                                 </p>
                                 <p>
-                                    <span className="font-semibold">
-                                        Registration:
-                                    </span>{" "}
-                                    #12345678900
+                                    <span className="font-semibold">Registration:</span> #12345678900
                                 </p>
                             </div>
-                            <h4 className="font-semibold mt-4 mb-2">
-                                Your contact
-                            </h4>
+                            <h4 className="font-semibold mt-4 mb-2">Your contact</h4>
                             <p>Mitchell Admin</p>
                             <p>admin@yourdomain.somewhere.com</p>
                             <p>+1 555-555-5555</p>
