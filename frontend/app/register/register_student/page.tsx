@@ -1,8 +1,10 @@
-import RegisterUser from "@/components/RegisterUser";
+import 
+
+StudentRegister
 export default function Home(){
     return (
         <main>
-            <RegisterUser/>
+            <StudentRegister/>
         </main>
     );
 }
