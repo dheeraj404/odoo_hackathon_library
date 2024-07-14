@@ -18,6 +18,7 @@ export const addNewBook = async (req, res) => {
       year,
       small_icon,
       large_icon,
+      quantity,
     } = req.body;
     const user = req.user;
     const library_id = user.library_id;
@@ -33,6 +34,7 @@ export const addNewBook = async (req, res) => {
       small_icon,
       large_icon,
       library_id,
+      quantity,
     });
     res.status(200).json({
       success: true,
@@ -278,33 +280,32 @@ export const approveOrRejectIssueRequest = async (req, res) => {
   }
 };
 
-
 //get all books issued returned of all students only to admin and librarian
 export const getAllBooksIssuedReturned = async (req, res) => {
-    try {
-        const user = req.user;
-        if (user.role !== "admin" && user.role !== "librarian") {
-        return res.status(401).json({
-            success: false,
-            message: "Not authorized to access this route",
-        });
-        }
-        const books = await BookLog.find({ library_id: user.library_id });
-        res.status(200).json({
-        success: true,
-        message: "Books fetched successfully",
-        data: books,
-        });
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).json({
+  try {
+    const user = req.user;
+    if (user.role !== "admin" && user.role !== "librarian") {
+      return res.status(401).json({
         success: false,
-        message: "Internal server error",
-        error: error.message,
-        });
+        message: "Not authorized to access this route",
+      });
     }
-    }
-    
+    const books = await BookLog.find({ library_id: user.library_id });
+    res.status(200).json({
+      success: true,
+      message: "Books fetched successfully",
+      data: books,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
 // get all books issued/returned of a user from params
 
 export const getBooksIssuedReturned = async (req, res) => {

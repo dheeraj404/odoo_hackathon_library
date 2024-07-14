@@ -41,7 +41,7 @@ function parseBookData(book) {
       : "",
     small_icon: volumeInfo.imageLinks?.smallThumbnail || "",
     large_icon: volumeInfo.imageLinks?.thumbnail || "",
-    quantity: 0, // Default value as per the model
+    quantity: 10, // Default value as per the model
   };
 }
 

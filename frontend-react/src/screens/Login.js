@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 export default function Login() {
   const initialValues = {
@@ -13,13 +14,26 @@ export default function Login() {
       .email('Invalid email address')
       .required('Required'),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
+      .min(3, 'Password must be at least 3 characters')
       .required('Required'),
   });
 
   const onSubmit = (values, { setSubmitting }) => {
     console.log(values);
+    // Call API to login user
     setSubmitting(false);
+    axios.post('http://localhost:5000/api/user/login', values)
+        .then((response) => {
+            // Save token in local storage
+            localStorage.setItem('token', response.data.token);
+            // Redirect user to dashboard
+            window.location.href = '/dashboard';
+            console.log('Login successful:', response.data);
+        })
+        .catch((error) => {
+            console.error('Error logging in:', error);
+        });
+
   };
 
   return (
