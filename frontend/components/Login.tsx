@@ -54,7 +54,7 @@ const Login: React.FC = () => {
                 </form>
                 <div className="border rounded-lg flex flex-col justify-center items-center space-y-4 w-full py-4 shadow-lg bg-white">
                     <p className="text-gray-500">Not registered?</p>
-                    <Link href="/register_student" className="border p-2 rounded-lg bg-primary text-secondary">Register as student with known library code</Link>
+                    <Link href="/register/" className="border p-2 rounded-lg bg-primary text-secondary">Register as student with known library code</Link>
                 </div>
             </div>
         </main>
