@@ -1,13 +1,14 @@
 // app/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Pagination } from "@/components/ui/pagination";
 import { useRouter } from "next/navigation";
+import handleSignOut from "@/lib/signout";
 
 const books = [
     {
@@ -70,21 +71,36 @@ export default function HomePage({params} : {params : {user_id : string}}) {
     const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
     const totalPages = Math.ceil(books.length / BOOKS_PER_PAGE);
 	const [searchQuery, setSearchQuery] = useState('');
+    const token = window.localStorage.getItem('token');
+    localStorage
     const handleSearch = (event: any) => {
         event.preventDefault();        
         router.push(`/search/${user_id}/${encodeURIComponent(searchQuery)}`);
     };
-
+    if(!token){
+        useEffect(()=>{
+            setTimeout(()=>{
+                router.replace('/login');
+            },2000);
+        },[]);
+        return(
+            <div className="min-h-screen flex items-center justify-center align-middle">
+                <p className="text-lg font-medium">You are not logged in or your session expired. Please login again.</p>
+            </div>          
+        )
+    }
     return (
         <div className="container mx-auto p-4">
             <header className="flex justify-between items-center mb-8">
                 <div className="flex items-center">
-                    <svg
-                        className="w-8 h-8 mr-2" /* Add your library icon SVG here */
+                    <img
+                        className="w-6 h-6 mr-2" /* Add your library icon SVG here */
+                        src="/illustration.png"
+                        alt="logo"
                     />
-                    <h1 className="text-2xl font-bold">Public Library</h1>
+                    <h1 className="text-2xl font-bold">LMS</h1>
                 </div>
-                <Button variant="outline">Sign out</Button>
+                <Button variant="outline" onClick={handleSignOut}>Sign out</Button>
             </header>
 
             <div className="grid grid-cols-3 gap-8">
