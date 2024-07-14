@@ -1,6 +1,6 @@
 // types.ts
 export interface RegisterFormData {
-    instituteName: string;
+    libraryName: string;
     address: string;
     pincode: string;
     adminName: string;

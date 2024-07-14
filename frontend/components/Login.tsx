@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import axios from 'axios';
 import { BASE_URL } from "@/lib/constants";
 
-export default function Login() {
+const Login: React.FC = () => {
     const login = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log("Logging in");
@@ -54,9 +54,11 @@ export default function Login() {
                 </form>
                 <div className="border rounded-lg flex flex-col justify-center items-center space-y-4 w-full py-4 shadow-lg bg-white">
                     <p className="text-gray-500">Not registered?</p>
-                    <Link href={"/register"} className="border p-2 rounded-lg bg-primary text-secondary">Register your Library</Link>
+                    <Link href="/student_register" className="border p-2 rounded-lg bg-primary text-secondary">Register as student with known library code</Link>
                 </div>
             </div>
         </main>
     );
-}
+};
+
+export default Login;
