@@ -1,3 +1,4 @@
+'use client'
 import { BASE_URL } from "@/lib/constants";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -19,10 +20,14 @@ export default function Dashboard() {
                         'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming the token is stored in localStorage
                     }
                 });
-
+                console.log(response);
                 if (response.status === 200) {
-                    setRole(response?.data?.role);
-                    setID(response?.data?._id);
+                    const responseRole = response?.data?.data?.role ;
+                    if(responseRole === 'student'){
+                        setRole('user');
+                    }
+                    else setRole(response?.data?.data?.role);
+                    setID(response?.data?.data?._id);
                     setValidated(true);
                 } else {
                     // Handle invalid token or other status codes
@@ -45,7 +50,7 @@ export default function Dashboard() {
     }, [validated, router]);
 
     if (validated && role !== '') {
-        router.push(`/${role.toLowerCase()}/id`);
+        router.push(`/dashboard/${role.toLowerCase()}/${id}`);
     }
 
     if(!validated){
