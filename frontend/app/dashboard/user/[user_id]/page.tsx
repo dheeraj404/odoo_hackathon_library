@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Pagination } from "@/components/ui/pagination";
 import { useRouter } from "next/navigation";
+import handleSignOut from "@/lib/signout";
 
 const books = [
     {
@@ -14,12 +15,15 @@ const books = [
         title: "Modern Development Cookbooks",
         description:
             "Rapidly build, customize, and deploy applications using modern development techniques.",
+        imageUrl : ''
     },
     {
         id: 2,
         title: "The Art of Clean Code",
         description:
             "Learn how to write maintainable, readable, and efficient code.",
+        imageUrl : ''
+
     },
     {
         id: 3,
@@ -62,6 +66,8 @@ const BOOKS_PER_PAGE = 3;
 
 export default function HomePage({ params }: { params: { user_id: string } }) {
     const { user_id } = params;
+    const [loading , setLoading] = useState(false);
+    const [error, setError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 	const router = useRouter();
     const indexOfLastBook = currentPage * BOOKS_PER_PAGE;
@@ -69,6 +75,7 @@ export default function HomePage({ params }: { params: { user_id: string } }) {
     const currentBooks = books.slice(indexOfFirstBook, indexOfLastBook);
     const totalPages = Math.ceil(books.length / BOOKS_PER_PAGE);
 	const [searchQuery, setSearchQuery] = useState('');
+    const token = window.localStorage.getItem('token');
     const handleSearch = (event: any) => {
         event.preventDefault();
         router.push(`/search/${user_id}/${encodeURIComponent(searchQuery)}`);
@@ -115,7 +122,7 @@ export default function HomePage({ params }: { params: { user_id: string } }) {
                             <Card key={book.id} className="mb-4">
                                 <CardContent className="flex p-4">
                                     <img
-                                        src={book.imageUrl}
+                                        src={book?.imageUrl}
                                         alt="Book cover"
                                         className="w-24 h-32 object-cover mr-4 rounded-md"
                                     />
