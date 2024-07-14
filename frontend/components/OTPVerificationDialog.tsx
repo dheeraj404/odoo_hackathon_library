@@ -44,7 +44,7 @@ export function OTPVerificationDialog({
                 "admin_name": registrationDetails.adminName,
                 "email": registrationDetails.email,
                 "password": registrationDetails.password,
-                "institute_name": registrationDetails.instituteName,
+                "library_name": registrationDetails.libraryName,
                 "address": registrationDetails.address,
                 "pincode": registrationDetails.pincode,
                 "otp" : otp

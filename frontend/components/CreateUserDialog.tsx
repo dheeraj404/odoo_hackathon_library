@@ -30,40 +30,40 @@ import {
     SelectItem,
 } from "@/components/ui/select";
 
-export function CreateUserDialog({ institute_id }: { institute_id: string }) {
+export function CreateUserDialog() {
     const [role, setRole] = useState("");
 
     const handleRoleChange = (value: string) => {
         setRole(value);
     };
 
-    const createUser = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        formData.append("role", role); // Manually append role to form data
+    // const createUser = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     const formData = new FormData(e.currentTarget);
+    //     formData.append("role", role); // Manually append role to form data
 
-        const name = formData.get("name");
-        const email = formData.get("email");
-        const password = formData.get("password");
-        if(email && password && name && role){
-            const response = await axios.post(`${BASE_URL}/api/user/register-new-user`, {
-                email,
-                password,
-                name,
-                role,
-                institute_id
-            }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}` // Replace YOUR_AUTH_TOKEN with the actual token
-                }
-            });
-            if(response?.data?.success){
-                console.log("User created successfully");
-                // Close the dialog
-                window.location.reload();
-            }
-        }                
-    };
+    //     const name = formData.get("name");
+    //     const email = formData.get("email");
+    //     const password = formData.get("password");
+    //     if(email && password && name && role){
+    //         const response = await axios.post(`${BASE_URL}/api/user/register-new-user`, {
+    //             email,
+    //             password,
+    //             name,
+    //             role,
+    //             institute_id
+    //         }, {
+    //             headers: {
+    //                 Authorization: `Bearer ${localStorage.getItem('token')}` // Replace YOUR_AUTH_TOKEN with the actual token
+    //             }
+    //         });
+    //         if(response?.data?.success){
+    //             console.log("User created successfully");
+    //             // Close the dialog
+    //             window.location.reload();
+    //         }
+    //     }                
+    // };
 
     return (
         <AlertDialog>
@@ -84,7 +84,7 @@ export function CreateUserDialog({ institute_id }: { institute_id: string }) {
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 gap-4">
-                        <form onSubmit={createUser} id="create_user">
+                        <form onSubmit={()=>console.log("HI")} id="create_user">
                             <div className="space-y-2">
                                 <Label htmlFor="name" className="inline-block">
                                     Name
