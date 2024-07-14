@@ -10,7 +10,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { OTPVerificationDialog } from "../../components/OTPVerificationDialog";
+import { OTPVerificationDialog } from "../../../components/OTPVerificationDialog";
 import { MoveLeft } from "lucide-react";
 import { RegisterFormData } from "@/lib/types";
 import { useState, useRef } from "react";
@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 
 export default function Register() {
     const [formData, setFormData] = useState<RegisterFormData>({
-        instituteName: "",
+        libraryName: "",
         address: "",
         pincode: "",
         adminName: "",
@@ -33,7 +33,7 @@ export default function Register() {
         if(formData.password !== formData.confirmPassword){
             setError("Passwords do not match");
         }
-        else if (formData.instituteName === "" || formData.address === "" || formData.pincode === "" || formData.adminName === "" || formData.email === "" || formData.password === "" || formData.confirmPassword === ""){
+        else if (formData.libraryName === "" || formData.address === "" || formData.pincode === "" || formData.adminName === "" || formData.email === "" || formData.password === "" || formData.confirmPassword === ""){
             setError("Please fill out all the fields");        
         }
         else if(formData.email.indexOf('@') === -1 || formData.email.indexOf('.') === -1){
@@ -73,7 +73,7 @@ export default function Register() {
                                 className="inline-block"
                                 onChange={(e) => setFormData({
                                     ...formData,
-                                    instituteName: e.target.value,
+                                    libraryName: e.target.value,
                                 })
                                 }
                             />

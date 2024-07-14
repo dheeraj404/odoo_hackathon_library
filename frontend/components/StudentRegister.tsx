@@ -1,4 +1,3 @@
-// pages/student_register.tsx
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -110,7 +109,7 @@ const StudentRegister: React.FC = () => {
                             className="inline-block"
                         />
                     </div>
-                    {error && <p className="text-red-500">{error}</p>}
+                    {error && <p className="text-red-500 font-medium">{error}</p>}
                     <Button type="submit">Register Student</Button>
                 </form>
             </div>
