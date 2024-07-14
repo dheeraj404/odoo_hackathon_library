@@ -7,6 +7,7 @@ import axios from 'axios';
 import { BASE_URL } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ArrowLeft } from "lucide-react";
 
 const Login: React.FC = () => {
     const router = useRouter();
@@ -52,6 +53,9 @@ const Login: React.FC = () => {
                     onSubmit={login}
                     className="grid grid-cols-1 gap-4 border rounded-lg p-12 shadow-lg bg-white"
                 >
+                    <Link href={"/"}>
+                        <ArrowLeft />
+                    </Link>
                     <div>
                         <Label htmlFor="login_email">Email</Label>
                         <Input type="email" required placeholder="Please enter your email" id="login_email" name="email"/>

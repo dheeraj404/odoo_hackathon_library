@@ -49,13 +49,15 @@ export default function Dashboard() {
         }
     }, [validated, router]);
 
-    if (validated && role !== '') {
-        router.push(`/dashboard/${role.toLowerCase()}/${id}`);
+    if (validated && role !== '' && role !== undefined && id !== undefined && id !== '') {
+        router.push(`/dashboard/${role?.toLowerCase()}/${id}`);
     }
 
     if(!validated){
-        <div>
-            <p>{message}</p>
-        </div>
+        return(
+            <div className="min-h-screen flex items-center justify-center align-middle">
+                <p className="text-lg font-medium">{message}</p>
+            </div>
+        );
     }
 }
