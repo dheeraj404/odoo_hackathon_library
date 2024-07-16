@@ -14,7 +14,7 @@ router.get('/search-books-by-genre/:genre', checkUserAuthentication, searchBooks
 router.get('/search-books-by-title/:title', checkUserAuthentication, searchBooksByTitle);
 router.get('/get-all-issue-requests', checkUserAuthentication, getAllIssueRequests);
 router.get('/get-all-books', checkUserAuthentication, getAllBooks);
-router.post('/request-to-issue-book', checkUserAuthentication, requestToIssueBook);
+router.post('/request-to-issue-book/:book_id', checkUserAuthentication, requestToIssueBook);
 router.post('/return-book', checkUserAuthentication, returnBook);
 router.get('/get-books-issued-returned', checkUserAuthentication, getBooksIssuedReturned);
 router.get('/get-all-books-issued-returned', checkUserAuthentication, getAllBooksIssuedReturned);

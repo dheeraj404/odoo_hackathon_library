@@ -189,6 +189,7 @@ export const registerNewUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: `New ${role} user registered successfully`,
+      token: user.getJwtToken(),
     });
   } catch (error) {
     console.log(error.message);
